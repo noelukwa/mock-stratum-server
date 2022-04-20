@@ -16,7 +16,7 @@ import (
 func main() {
 	port := flag.String("port", "8080", "port to listen on")
 
-	dsn := flag.String("dsn", "postgresql://localhost:5434/luxor?user=luxor&password=luxor&sslmode=disable", "database connection string")
+	dsn := flag.String("dsn", "postgresql://localhost:5432/luxor?user=uche&password=uchechukwu&sslmode=disable", "database connection string")
 
 	flag.Parse()
 

@@ -14,6 +14,5 @@ CREATE TABLE IF NOT EXISTS subscriptions (
     id VARCHAR(255) NOT NULL,
     created_at TIMESTAMP NOT NULL DEFAULT NOW(),
     user_agent VARCHAR(255),
-    extra_nonce VARCHAR NOT NULL,
-    FOREIGN KEY (req_id) REFERENCES requests(req_id) ON DELETE CASCADE
+    extra_nonce VARCHAR NOT NULL
 );
