@@ -11,7 +11,7 @@ import (
 )
 
 func NewTCP(ctx context.Context, ln net.Listener) error {
-	fmt.Println("Listening on port", ln.Addr().(*net.TCPAddr).Port)
+
 	db, err := NewFakeDB()
 	if err != nil {
 		fmt.Printf("Error creating db: %v\n", err)
@@ -23,13 +23,13 @@ func NewTCP(ctx context.Context, ln net.Listener) error {
 			return nil
 		default:
 			for {
-				fmt.Println("Waiting for connection")
+
 				conn, err := ln.Accept()
 				if err != nil {
 					fmt.Printf("Error accepting connection: %v\n", err)
 					return err
 				}
-				fmt.Println("Accepted connection from", conn.RemoteAddr())
+				// fmt.Println("Accepted connection from", conn.RemoteAddr())
 				handler := server.NewHandler(db, conn)
 				handler.HandleRequests()
 			}
@@ -40,7 +40,7 @@ func NewTCP(ctx context.Context, ln net.Listener) error {
 }
 
 func NewFakeDB() (*sqlx.DB, error) {
-	fmt.Println("Creating fake db")
+
 	db, err := sqlx.Open("sqlite3", ":memory:")
 	if err != nil {
 		return nil, err
@@ -69,6 +69,5 @@ func NewFakeDB() (*sqlx.DB, error) {
 		return nil, err
 	}
 
-	fmt.Println("Created fake table")
 	return db, nil
 }

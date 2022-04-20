@@ -49,6 +49,7 @@ func NewHandler(db *sqlx.DB, conn net.Conn) *Handler {
 	}
 }
 
+// HandleRequests listens for connections and reads data from each connection
 func (h *Handler) HandleRequests() {
 
 	reader := bufio.NewReader(h.conn)
@@ -72,8 +73,6 @@ func (h *Handler) HandleRequests() {
 			h.handleSubscribe(req)
 		case "mining.authorize":
 			h.handleAuthorize(req)
-		case "mining.notify":
-			h.handleNotify(req)
 		default:
 			log.Printf("unknown method: %s", req.Method)
 		}
@@ -136,11 +135,6 @@ func (h *Handler) handleAuthorize(req Request) error {
 	return nil
 }
 
-func (h *Handler) handleNotify(req Request) error {
-
-	return nil
-}
-
 func (h *Handler) respond(res Response) error {
 	msg, err := json.Marshal(res)
 	if err != nil {
@@ -159,13 +153,13 @@ func randHex() string {
 	return hex.EncodeToString(buf)
 }
 
+// startFakeJob starts a fake job that will be used to test the stratum server notify method
 func (h *Handler) startFakeJob() {
 
 	defer func() {
 		log.Println("fake job stopped")
 	}()
 
-	log.Println("starting fake job")
 	for {
 		time.Sleep(time.Second * 3)
 		var notis Notification
