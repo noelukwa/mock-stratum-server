@@ -6,8 +6,10 @@ import (
 	"log"
 	"net"
 
+	"github.com/golang-migrate/migrate/v4"
 	"github.com/jmoiron/sqlx"
 	_ "github.com/lib/pq"
+	"gitlab.com/0xjonin/stratum/cmd/data"
 	"gitlab.com/0xjonin/stratum/pkg/server"
 )
 
@@ -17,6 +19,10 @@ func main() {
 	dsn := flag.String("dsn", "postgresql://localhost:5434/luxor?user=luxor&password=luxor&sslmode=disable", "database connection string")
 
 	flag.Parse()
+
+	if err := data.RunMigration(*dsn); err != nil && err != migrate.ErrNoChange {
+		log.Fatal(err)
+	}
 
 	dbConn, err := sqlx.Connect("postgres", *dsn)
 	if err != nil {
@@ -36,7 +42,7 @@ func main() {
 		if err != nil {
 			log.Fatal(err)
 		}
-		go handler.HandleRequests()
+		handler.HandleRequests()
 	}
 
 }

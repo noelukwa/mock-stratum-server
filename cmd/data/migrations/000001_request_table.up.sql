@@ -1,9 +1,10 @@
 
 CREATE TABLE IF NOT EXISTS requests (
   method VARCHAR(255) NOT NULL,
-  created_at TIMESTAMP NOT NULL,
+  created_at TIMESTAMP NOT NULL DEFAULT NOW(),
+  req_id VARCHAR(255) NOT NULL,
   id VARCHAR(255) NOT NULL,
-  user_id VARCHAR(255), 
+  user_id VARCHAR(255)
 );
 
 
@@ -11,6 +12,8 @@ CREATE TABLE IF NOT EXISTS subscriptions (
     req_id VARCHAR(255) NOT NULL,
     method VARCHAR(255) NOT NULL,
     id VARCHAR(255) NOT NULL,
-    created_at TIMESTAMP NOT NULL,
-    user_agent VARCHAR(255)
+    created_at TIMESTAMP NOT NULL DEFAULT NOW(),
+    user_agent VARCHAR(255),
+    extra_nonce VARCHAR NOT NULL,
+    FOREIGN KEY (req_id) REFERENCES requests(req_id) ON DELETE CASCADE
 );
